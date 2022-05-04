@@ -1,9 +1,9 @@
 // const { Timestamp } = require('mongodb')
 const mongoose = require('mongoose')
 
-// const { ObjectId } = require('mongodb')
+const { ObjectId } = require('mongodb')
 
-const ObjectId = mongoose.Schema.Types.ObjectId
+// const ObjectId = mongoose.Schema.Types.ObjectId
 
 const internSchema = new mongoose.Schema({
     name:{
@@ -11,27 +11,26 @@ const internSchema = new mongoose.Schema({
         trim:true,
         required:true
     },
-    emmail:{
+    email:{
         type:String,
         trim:true,
-        unique:true,
+        // unique:true,
         required:true
     },
-    mobile{
+    mobile:{
         type:Number,
-        unique:true,
+        // unique:true,
         required:true
     },
-    collegeId{
+    collegeId:{
         type:ObjectId,
         ref:"college" //refred college collection
     },
-    isDeleted{
+    isDeleted:{
         type:Boolean, default:false
-    },
-
+    }
 
 }, { timestamps: true });
 
 
-module,exports= mongoose.model('intern',internSchema)
+module.exports = mongoose.model('intern', internSchema)
