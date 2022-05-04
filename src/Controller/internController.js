@@ -42,7 +42,7 @@ const createIntern = async function (req, res) {
         }
 
         let createInterns = await internModel.create(requestBody)
-        return res.status(201).send({ status: false, msg: "Intern has been created successfully", createInterns })
+        return res.status(201).send({ status: true, msg: "Intern has been created successfully", createInterns })
     }
     catch (err) {
         console.log("This is the error :", err.message)
@@ -50,4 +50,5 @@ const createIntern = async function (req, res) {
     }
 
 }
+
 module.exports.createIntern = createIntern

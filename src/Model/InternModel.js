@@ -1,9 +1,9 @@
 // const { Timestamp } = require('mongodb')
 const mongoose = require('mongoose')
 
-const { ObjectId } = require('mongodb')
+// const { ObjectId } = require('mongodb')
 
-// const ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const internSchema = new mongoose.Schema({
     name:{
