@@ -1,39 +1,42 @@
-
 const collegeModel = require("../Model/CollegeModel")
 const internModel = require("../Model/InternModel")
 const validator = require("../validator/validator");
 
-// create collage function
-
+// Create collage function
 const createCollege = async function (req, res) {
     try {
-        const { name, fullName, logoLink } = req.body;
-        const requestBody = req.body;
+        let data = req.body
+        // Checking input from request body
+        if (Object.keys(data) == 0) {
+            return res.status(400).send({ status: false, msg: "Bad Request,No Data Provided" })
+        };
+        let { name, fullName, logoLink } = data;
 
-
-        //college Name is Mandatory
+        // College Name is Mandatory
         if (!validator.isValid(name)) {
             return res.status(400).send({ status: false, msg: " College Name is required" });
         }
+        // FullName is Mandatory
         if (!validator.isValid(fullName)) {
             return res.status(400).send({ status: false, msg: "FullName of College is required" });
         }
-           //Logolink is Mandatory....
+        //Logolink is Mandatory
         if (!validator.isValid(logoLink)) {
             return res.status(400).send({ status: false, msg: "logoLink is required" });
         }
-
+        // Checking college short name from our existing data base
         let findCollege = await collegeModel.findOne({ name: data.name })
-        // console.log(findCollege)
         if (findCollege) {
             return res.status(400).send({ status: false, msg: "college already exist" })
         }
 
+        // This is the URl format for checking if the inputted URL perfectely formatted or not
         let validUrlPattern = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
         if (!validUrlPattern.test(data.logoLink)) {
             return res.status(400).send({ status: false, msg: "Not a valid URL" })
         }
 
+        // Creating college
         let createCollege = await collegeModel.create(data);
 
         return res.status(201).send({ status: true, msg: "College has been created successfully", createCollege })
@@ -46,23 +49,31 @@ const createCollege = async function (req, res) {
 
 }
 
+// Get college details function
 const getInterns = async function (req, res) {
     try {
-        let collegeName = req.query.collegeName
+        const data = req.query
+        // Checking data from req.query
+        if (Object.keys(data) == 0) {
+            return res.status(400).send({ status: false, msg: "Bad Request, No Data Provided" })
+        };
 
-        if (!collegeName) {
+        let collegeName = req.query.collegeName
+        // College Name is Mandatory in req.query
+        if (!validator.isValid(collegeName)) {
             return res.status(400).send({ status: false, msg: "College name is rquired" })
         }
-
+        // Checking inputted college name from our existing data base
         let findCollege = await collegeModel.findOne({ name: collegeName })
         if (!findCollege) {
             return res.status(400).send({ status: false, msg: "This college is not found" })
         }
+        // Finding all the interns from our existing dada base
+        let findInterns = await internModel.find({ collegeId: findCollege._id, isDeleted: false })
+            .select({ _id: 1, name: 1, email: 1, mobile: 1 })
+        // { collegeId: 0, isDeleted: 0, createdAt: 0, updatedAt: 0, __v: 0 })
 
-        let findInterns = await internModel.find({ collegeId: findCollege._id, isDeleted: false },
-            { collegeId: 0, isDeleted: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-        // console.log(findInterns)
-
+        // Checking length the length of findInterns
         if (findInterns.length == 0) {
             return res.status(404).send({ status: false, msg: "No intern is resisterd for this college" })
         }

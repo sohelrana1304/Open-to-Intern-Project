@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const internSchema = new mongoose.Schema({
@@ -21,12 +20,12 @@ const internSchema = new mongoose.Schema({
     },
     collegeId: {
         type: ObjectId,
-        ref: "college", //refred college collection
+        ref: "college", //refred to college collection
     },
     isDeleted: {
         type: Boolean,
         default: false,
-    },
+    }
 
 }, { timestamps: true });
 
