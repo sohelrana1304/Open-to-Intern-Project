@@ -24,10 +24,17 @@ const createCollege = async function (req, res) {
         if (!validator.isValid(logoLink)) {
             return res.status(400).send({ status: false, msg: "logoLink is required" });
         }
+        
+        // // Checking the inputted short name only in lowercase
+        // let shortName = /^[a-z]+$/;
+        // if(!shortName.test(data.name)){
+        //     return res.status(400).send({ status: false, msg: "Use lowercase only" })
+        // }
+
         // Checking college short name from our existing data base
         let findCollege = await collegeModel.findOne({ name: data.name })
         if (findCollege) {
-            return res.status(400).send({ status: false, msg: "college already exist" })
+            return res.status(400).send({ status: false, msg: "College already exist" })
         }
 
         // This is the URl format for checking if the inputted URL perfectely formatted or not
@@ -35,6 +42,12 @@ const createCollege = async function (req, res) {
         if (!validUrlPattern.test(data.logoLink)) {
             return res.status(400).send({ status: false, msg: "Not a valid URL" })
         }
+
+        // let findUrl = await collegeModel.findOne({logoLink: data.logoLink})
+        // console.log(findUrl)
+        // if(findUrl){
+        //     return res.status(400).send({staus: false, msg:"URL is already used"})
+        // }
 
         // Creating college
         let createCollege = await collegeModel.create(data);
@@ -63,6 +76,13 @@ const getInterns = async function (req, res) {
         if (!validator.isValid(collegeName)) {
             return res.status(400).send({ status: false, msg: "College name is rquired" })
         }
+
+        // Checking inputted college sort name for lowercase
+        let shortName = /^[a-z]+$/;
+        if(!shortName.test(collegeName)){
+            return res.status(400).send({ status: false, msg: "Input college short name in lowercase" })
+        }
+
         // Checking inputted college name from our existing data base
         let findCollege = await collegeModel.findOne({ name: collegeName })
         if (!findCollege) {

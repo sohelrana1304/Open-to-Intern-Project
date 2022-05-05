@@ -1,4 +1,5 @@
 const internModel = require("../Model/InternModel");
+const collegeModel = require("../Model/CollegeModel")
 const validator = require('../validator/validator');
 
 const createIntern = async function (req, res) {
@@ -28,6 +29,12 @@ const createIntern = async function (req, res) {
             return res.status(400).send({ status: false, msg: " collegeId is required" });
         }
 
+        // // Checking inputted name only in characters
+        // let namePatern  = /^[a-zA-Z]+ [a-zA-Z]+$/;
+        // if(!namePatern.test(req.body.name)){
+        //     return res.status(400).send({status: false, msg:"Use characters only"})
+        // }
+
         // This is the mail format for checking if the inputted email id perfectely formatted or not
         let mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         // Checking if the inputted email id perfectely formatted or not
@@ -52,6 +59,12 @@ const createIntern = async function (req, res) {
         let findMobileNo = await internModel.findOne({ mobile: data.mobile })
         if (findMobileNo) {
             return res.status(400).send({ status: false, msg: "Mobile number is already registerd" })
+        }
+
+        // Checking valid college id from college model
+        let checkCollegeId = await collegeModel.findOne({_id: data.collegeId})
+        if(!checkCollegeId){
+            return res.status(400).send({ status: false, msg: "College id is not valid" })
         }
 
         // Creating intern
