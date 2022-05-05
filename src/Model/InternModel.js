@@ -14,12 +14,12 @@ const internSchema = new mongoose.Schema({
     email:{
         type:String,
         trim:true,
-        // unique:true,
+        unique:true,
         required:true
     },
     mobile:{
         type:Number,
-        // unique:true,
+        unique:true,
         required:true
     },
     collegeId:{

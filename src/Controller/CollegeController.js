@@ -6,7 +6,7 @@ const internModel = require("../Model/InternModel")
 
 const createclg = async function (req, res) {
     try {
-        const { name, fullName, logoLink, isDeleted } = req.body;
+        const { name, fullName, logoLink } = req.body;
         const requestBody = req.body;
 
         if (!requestBody.name) {
@@ -57,7 +57,7 @@ const getInterns = async function (req, res) {
 
         let findInterns = await internModel.find({ collegeId: findCollege._id, isDeleted: false },
             { collegeId: 0, isDeleted: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-            // console.log(findInterns)
+        // console.log(findInterns)
 
         if (findInterns.length == 0) {
             return res.status(404).send({ status: false, msg: "No intern is resisterd for this college" })
