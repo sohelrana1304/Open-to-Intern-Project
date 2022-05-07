@@ -22,6 +22,6 @@ const clgSchehema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-module.exports = mongoose.model('college', clgSchehema)
+module.exports = mongoose.model("college", clgSchehema)
 
 

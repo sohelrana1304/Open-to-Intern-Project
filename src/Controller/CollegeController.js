@@ -14,7 +14,7 @@ const createCollege = async function (req, res) {
 
         // College Name is Mandatory
         if (!validator.isValid(name)) {
-            return res.status(400).send({ status: false, msg: " College Name is required" });
+            return res.status(400).send({ status: false, msg: "College Name is required" });
         }
         // FullName is Mandatory
         if (!validator.isValid(fullName)) {
@@ -25,17 +25,22 @@ const createCollege = async function (req, res) {
             return res.status(400).send({ status: false, msg: "logoLink is required" });
         }
         
-        // // Checking the inputted short name only in lowercase
-        // let shortName = /^[a-z]+$/;
-        // if(!shortName.test(data.name)){
-        //     return res.status(400).send({ status: false, msg: "Use lowercase only" })
-        // }
+        // Checking the inputted short name only in lowercase
+        let shortName = /^[a-z]+$/;
+        if(!shortName.test(data.name)){
+            return res.status(400).send({ status: false, msg: "Use lowercase only" })
+        }
 
         // Checking college short name from our existing data base
-        let findCollege = await collegeModel.findOne({ name: data.name })
-        if (findCollege) {
+        let findCollege = await collegeModel.find({name: data.name})
+        // console.log(findCollege)
+        if (findCollege.length != 0) {
             return res.status(400).send({ status: false, msg: "College already exist" })
         }
+
+        // let a = await collegeModel.find({ name: data.name })
+        // if (a.length != 0) 
+        //     return res.status(400).send({ status: false, msg: "This Name is already used." })
 
         // This is the URl format for checking if the inputted URL perfectely formatted or not
         let validUrlPattern = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
