@@ -32,15 +32,11 @@ const createCollege = async function (req, res) {
         }
 
         // Checking college short name from our existing data base
-        let findCollege = await collegeModel.find({name: data.name})
-        // console.log(findCollege)
-        if (findCollege.length != 0) {
+        let findCollege = await collegeModel.findOne({name: data.name})
+        console.log(findCollege)
+        if (findCollege) {
             return res.status(400).send({ status: false, msg: "College already exist" })
         }
-
-        // let a = await collegeModel.find({ name: data.name })
-        // if (a.length != 0) 
-        //     return res.status(400).send({ status: false, msg: "This Name is already used." })
 
         // This is the URl format for checking if the inputted URL perfectely formatted or not
         let validUrlPattern = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
@@ -48,8 +44,8 @@ const createCollege = async function (req, res) {
             return res.status(400).send({ status: false, msg: "Not a valid URL" })
         }
 
+        // // Checking unique URL
         // let findUrl = await collegeModel.findOne({logoLink: data.logoLink})
-        // console.log(findUrl)
         // if(findUrl){
         //     return res.status(400).send({staus: false, msg:"URL is already used"})
         // }
